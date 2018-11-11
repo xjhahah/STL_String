@@ -59,7 +59,10 @@ public:
 	}
 	String(const char* str = "")
 	{
-
+		_str = nullptr;
+		_size = strlen(str);
+		_capacity = _size;
+		strcpy(_str, str);
 	}
 	String(const String& s)
 		:_str(nullptr)
