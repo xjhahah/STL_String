@@ -69,16 +69,16 @@ void String::Resize(size_t n, char ch)
 }
 size_t String::Find(char ch, size_t pos = 0)
 {
-	for(;pos<_size;++pos)
+	String::iterator it = begin();
+	for(;it!=end();++it)
 	{
-		if (_str[pos] == ch)
+		if (_str[*it] == ch)
 		{
-			cout << pos << endl;
-			return pos;
+			pos = *it;
+			cout << pos;
 		}
-		break;
 	}
-	return 
+	return pos;
 }
 //size_t String::Find(const char* str, size_t pos = 0)
 //{
