@@ -1,8 +1,11 @@
 #include "String.h"
 
-const size_t String::npos=-1;
+
 int main()
 {
+	String s1("hello");
+	cout << s1 << endl;
+	cout << s1.PushBack(' ') << endl;
 
 	return 0;
 }

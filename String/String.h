@@ -2,66 +2,27 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string.h>
+#include <cassert>
 using namespace std;
 
 class String
 {
 public:
-	String(char* str)
-		:_str(new char [strlen(str)+1])
-	{
-		strcpy(_str, str);
-	}
-	String(const char* str="")
-		:_str(new char[strlen(str)+1])
-	{
-		strcpy(_str, str);  //while(*dst++.*src++)
-	}
-
-	/*String(const String& s)
-		:_str(new char[strlen(s._str) + 1])
-	{
-		strcpy(_str, s._str);
-	}*/
-
-	//s1=s2
-	//传统写法
-	//String& operator=(const String& s)
-	//{
-	//	if (this != &s)
-	//	{
-	//		delete[] _str;
-	//		_str = new char[strlen(s._str) + 1];
-	//		//strcpy(_str, s._str);
-	//	}
-	//	for (size_t i = 0; i < (strlen(s._str) + 1); ++i)
-	//	{
-	//		_str[i] = s._str[i];
-	//	}
-	//	return *this;
-	//}
-	//现代写法
-	String(const String& s)
-		:_str(nullptr)
-	{
-		String tmp(s._str);
-		swap(_str, tmp._str);
-	}
-	String& operator=(String s)
-	{
-		swap(_str, s._str);
-		return *this;
-	}
 	friend ostream& operator<<(ostream& _cout,const String& s)
 	{
 		_cout << s._str ;
 		return _cout;
 	}
+	friend istream& operator>>(istream& _cin,const String& s)
+	{
+		
+	}
+
 	String(const char* str = "")
 	{
-		_str = nullptr;
 		_size = strlen(str);
 		_capacity = _size;
+		_str = new char[_capacity + 1];
 		strcpy(_str, str);
 	}
 	String(const String& s)
@@ -74,33 +35,69 @@ public:
 	}
 	String& operator=(String s)
 	{
-
+		this->Swap(s);
+		return *this;
 	}
-	~String();
+	char& operator[](size_t pos)
+	{
+		assert(pos<_size);
+		return _str[pos];
+	}
+	const char& operator[](size_t pos) const
+	{
+		assert(pos < _size);
+		return _str[pos];
+	}
+	~String()
+	{
+		if (_str)
+		{
+			delete[] _str;
+			_str = nullptr;
+			_size = _capacity = 0;
+		}
+	}
 
-	void PushBack(char ch);
+	void Reserve(size_t n);
+	void Resize(size_t n, char ch);
+
+	String& PushBack(char ch);
 	void Append(const char* str);
 	String& operator+=(char ch);
 	String& operator+=(const char* str);
 	size_t Find(char ch, size_t pos = 0);
 	size_t Find(const char* str, size_t pos = 0);
-	void Insert(size_t pos);
-	void Insert(size_t pos,const char* str);
-	void Insert(size_t pos,size_t len=npos);
-	char& operator[](size_t pos);
-	const char& operator[](size_t pos)const;
-	size_t Size()const;
-	size_t Capacity()const;
+	void Insert(size_t pos, char ch);
+	void Insert(size_t pos, const char* str);
+	void Erase(size_t pos, size_t len = npos);
+	size_t Size()const
+	{
+		return _size;
+	}
+	size_t Capacity()const
+	{
+		return _capacity;
+	}
 	void Swap(String s)
 	{
 		swap(_str, s._str);
 		swap(_size, s._size);
 		swap(_capacity, s._capacity);
 	}
-	~String()
+	const char* c_str()
 	{
-		if (_str)
-			delete[] _str;
+		return _str;
+	}
+	//定义迭代器
+	typedef char* iterator;
+	typedef const char* const_iterator;
+	iterator begin()
+	{
+		return _str;
+	}
+	iterator end()
+	{
+		return _str + _size;
 	}
 private:
 	char* _str;
@@ -108,3 +105,4 @@ private:
 	size_t _capacity;  //实际存数数据的空间
 	static const size_t npos;
 };
+const size_t String::npos = -1;
