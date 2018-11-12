@@ -80,24 +80,26 @@ int String::Find(char ch, size_t pos)
 }
 int String::Find(const char* str, size_t pos)
 {
-	size_t len1 = strlen(_str);
-	size_t len2 = strlen(str);
-	if (len2 > _capacity)
+	size_t len = strlen(str);
+	if (_size + len > _capacity)
 	{
-		Reserve(_capacity + len2);
+		Reserve(_size + len);
 	}
-	for (size_t i = 0; i < len2; i++)
+	for (; pos < _size; ++pos)
 	{
-		while(_str[pos] != *str)
-		{
-			++pos;
-		}
-		if (_str[pos] == *str)
+		int n = pos;
+		while (*str == _str[n])
 		{
 			str++;
+			n++;
 		}
+		if (*str == '\0')
+		{
+			return pos;
+		}
+		continue;
 	}
-	return pos;
+	return -1;
 }
 void String::Insert(size_t pos, char ch)
 {
@@ -123,7 +125,7 @@ void String::Insert(size_t pos, const char* str)
 	size_t len = strlen(str);
 	if (_size + len > _capacity)
 	{
-		Reserve((_size + len));
+		Reserve(_capacity + len);
 	}
 	size_t end = _size;
 	while (end >= pos)
