@@ -67,68 +67,96 @@ void String::Resize(size_t n, char ch)
 		_size = n;
 	}
 }
-size_t String::Find(char ch, size_t pos)
+int String::Find(char ch, size_t pos)
 {
 	for (; pos < _size; ++pos)
 	{
 		if (_str[pos] == ch)
 		{
-			cout << pos << " ";
-			break;
+			return pos;
 		}
 	}
-	return  pos;
+	return  -1;
 }
-size_t String::Find(const char* str, size_t pos)
+int String::Find(const char* str, size_t pos)
 {
-	size_t len = strlen(str);
-	size_t flag = 0;
-	if (len > _capacity)
+	size_t len1 = strlen(_str);
+	size_t len2 = strlen(str);
+	if (len2 > _capacity)
 	{
-		Reserve(_capacity + len);
+		Reserve(_capacity + len2);
 	}
-	for (size_t i = 0; i < len; i++)
+	for (size_t i = 0; i < len2; i++)
 	{
-		flag = 0;
-		while(_str[pos] != str[i])
+		while(_str[pos] != *str)
 		{
 			++pos;
-			if (_str[pos] == str[i])
-			{
-				flag = 1;
-			}
+		}
+		if (_str[pos] == *str)
+		{
+			str++;
 		}
 	}
-	if (flag)
-		return pos;
-	else
-		printf("该字符串中没有所查的子串。");
-		return -1;
-	
+	return pos;
 }
 void String::Insert(size_t pos, char ch)
 {
+	assert(pos <= _size);
 	if (_size == _capacity)
 	{
 		Reserve(_capacity * 2);
 	}
-	for (size_t i = 0; i < _size; ++i)
+	size_t end = _size;
+	while (end>=pos)
 	{
-		if (i == pos)
-		{
-			_str[pos] = ch;
-			++_size;
-			_str[_size] = '\0';
-			cout << *this << endl;
-			break;
-		}
+		_str[end + 1] = _str[end];
+		--end;
 	}
+	_str[pos] = ch;
+	++_size;
+	_str[_size] = '\0';
+	cout << *this;
 }
 void String::Insert(size_t pos, const char* str)
 {
-
+	assert(pos <= _size);
+	size_t len = strlen(str);
+	if (_size + len > _capacity)
+	{
+		Reserve((_size + len));
+	}
+	size_t end = _size;
+	while (end >= pos)
+	{
+		_str[end + len] = _str[end];
+		--end;
+	}
+	int i = 0;
+	while (len--)
+	{
+		_str[pos + i] = str[i];
+		++i;
+		++_size;
+	}
+	_str[_size] = '\0';
+	cout << *this << endl;
 }
 void String::Erase(size_t pos, size_t len)
 {
-
+	assert(!len);
+	assert(pos < _size);
+	if (pos + len >= _size)
+	{
+		_size = pos;
+		_str[_size] = '\0';
+	}
+	else
+	{
+		char* dst = _str + pos + len;
+		char* src = _str + pos;
+		strcpy(src, dst);
+		delete[] src;
+		_size -= len;
+	}
+	cout << *this;
 }
