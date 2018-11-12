@@ -1,7 +1,7 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include <string.h>
+//#include <cstring>
 #include <cassert>
 using namespace std;
 
@@ -48,6 +48,7 @@ public:
 		assert(pos < _size);
 		return _str[pos];
 	}
+
 	~String()
 	{
 		if (_str)
@@ -61,7 +62,7 @@ public:
 	void Reserve(size_t n);
 	void Resize(size_t n, char ch);
 
-	String& PushBack(char ch);
+	void PushBack(char ch);
 	void Append(const char* str);
 	String& operator+=(char ch);
 	String& operator+=(const char* str);
@@ -77,6 +78,10 @@ public:
 	size_t Capacity()const
 	{
 		return _capacity;
+	}
+	bool Empty()const
+	{
+		return 0 == _size;
 	}
 	void Swap(String s)
 	{
@@ -105,4 +110,3 @@ private:
 	size_t _capacity;  //实际存数数据的空间
 	static const size_t npos;
 };
-const size_t String::npos = -1;

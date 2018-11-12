@@ -5,14 +5,14 @@ void String::Reserve(size_t n)
 	if (n>_capacity)
 	{
 		char* NewCapacity = new char(n+1);
-		strcpy(_str, NewCapacity);
+		strcpy(NewCapacity, _str);
 		delete[] _str;
 		_str = NewCapacity;
-		_size = n;
+		_capacity = n;
 	}
 }
 
-String& String::PushBack(char ch)
+void String::PushBack(char ch)
 {
 	if (_size == _capacity)
 	{
@@ -21,7 +21,7 @@ String& String::PushBack(char ch)
 	_str[_size] = ch;
 	++_size;
 	_str[_size] = '\0';
-	return *this;
+	cout << *this << endl;
 }
 void String::Append(const char* str)
 {
@@ -67,32 +67,68 @@ void String::Resize(size_t n, char ch)
 		_size = n;
 	}
 }
-size_t String::Find(char ch, size_t pos = 0)
+size_t String::Find(char ch, size_t pos)
 {
-	String::iterator it = begin();
-	for(;it!=end();++it)
+	for (; pos < _size; ++pos)
 	{
-		if (_str[*it] == ch)
+		if (_str[pos] == ch)
 		{
-			pos = *it;
-			cout << pos;
+			cout << pos << " ";
+			break;
 		}
 	}
-	return pos;
+	return  pos;
 }
-//size_t String::Find(const char* str, size_t pos = 0)
-//{
-//
-//}
-//void String::Insert(size_t pos, char ch)
-//{
-//
-//}
-//void String::Insert(size_t pos, const char* str)
-//{
-//
-//}
-//void String::Erase(size_t pos, size_t len = npos)
-//{
-//
-//}
+size_t String::Find(const char* str, size_t pos)
+{
+	size_t len = strlen(str);
+	size_t flag = 0;
+	if (len > _capacity)
+	{
+		Reserve(_capacity + len);
+	}
+	for (size_t i = 0; i < len; i++)
+	{
+		flag = 0;
+		while(_str[pos] != str[i])
+		{
+			++pos;
+			if (_str[pos] == str[i])
+			{
+				flag = 1;
+			}
+		}
+	}
+	if (flag)
+		return pos;
+	else
+		printf("该字符串中没有所查的子串。");
+		return -1;
+	
+}
+void String::Insert(size_t pos, char ch)
+{
+	if (_size == _capacity)
+	{
+		Reserve(_capacity * 2);
+	}
+	for (size_t i = 0; i < _size; ++i)
+	{
+		if (i == pos)
+		{
+			_str[pos] = ch;
+			++_size;
+			_str[_size] = '\0';
+			cout << *this << endl;
+			break;
+		}
+	}
+}
+void String::Insert(size_t pos, const char* str)
+{
+
+}
+void String::Erase(size_t pos, size_t len)
+{
+
+}
