@@ -15,7 +15,8 @@ public:
 	}
 	friend istream& operator>>(istream& _cin,const String& s)
 	{
-		
+		_cin >> s._str;
+		return _cin;
 	}
 
 	String(const char* str = "")
