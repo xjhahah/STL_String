@@ -67,7 +67,7 @@ void String::Resize(size_t n, char ch)
 		_size = n;
 	}
 }
-int String::Find(char ch, size_t pos)
+size_t String::Find(char ch, size_t pos)
 {
 	for (; pos < _size; ++pos)
 	{
@@ -76,9 +76,9 @@ int String::Find(char ch, size_t pos)
 			return pos;
 		}
 	}
-	return  -1;
+	return  String::npos;
 }
-int String::Find(const char* str, size_t pos)
+size_t String::Find(const char* str, size_t pos)
 {
 	size_t len = strlen(str);
 	if (_size + len > _capacity)
@@ -99,7 +99,7 @@ int String::Find(const char* str, size_t pos)
 		}
 		continue;
 	}
-	return -1;
+	return String::npos;
 }
 void String::Insert(size_t pos, char ch)
 {

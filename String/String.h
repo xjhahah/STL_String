@@ -67,8 +67,8 @@ public:
 	void Append(const char* str);
 	String& operator+=(char ch);
 	String& operator+=(const char* str);
-	int Find(char ch, size_t pos = 0);
-	int Find(const char* str, size_t pos = 0);
+	size_t Find(char ch, size_t pos = 0);
+	size_t Find(const char* str, size_t pos = 0);
 	void Insert(size_t pos, char ch);
 	void Insert(size_t pos, const char* str);
 	void Erase(size_t pos, size_t len = npos);
@@ -105,6 +105,8 @@ public:
 	{
 		return _str + _size;
 	}
+////////////////////////LeetCode//////////////////////////////////
+
 private:
 	char* _str;
 	size_t _size;
