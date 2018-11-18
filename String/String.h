@@ -22,7 +22,7 @@ public:
 	String(const char* str = "")
 	{
 		_size = strlen(str);
-		_capacity = _size;
+		_capacity = _size > 15 ? _size : 15;
 		_str = new char[_capacity + 1];
 		strcpy(_str, str);
 	}
@@ -68,10 +68,12 @@ public:
 	String& operator+=(char ch);
 	String& operator+=(const char* str);
 	size_t Find(char ch, size_t pos = 0);
+	size_t RFind(char ch, size_t pos = 0);
 	size_t Find(const char* str, size_t pos = 0);
 	void Insert(size_t pos, char ch);
 	void Insert(size_t pos, const char* str);
 	void Erase(size_t pos, size_t len = npos);
+	String Substr(size_t pos, size_t len);
 	size_t Size()const
 	{
 		return _size;
@@ -111,5 +113,6 @@ private:
 	char* _str;
 	size_t _size;
 	size_t _capacity;  //实际存数数据的空间
+public:
 	static const size_t npos;
 };

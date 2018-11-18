@@ -14,24 +14,28 @@ void String::Reserve(size_t n)
 
 void String::PushBack(char ch)
 {
-	if (_size == _capacity)
-	{
-		Reserve(_capacity * 2);
-	}
-	_str[_size] = ch;
-	++_size;
-	_str[_size] = '\0';
-	cout << *this << endl;
+	//if (_size == _capacity)
+	//{
+	//	Reserve(_capacity * 2);
+	//}
+	//_str[_size] = ch;
+	//++_size;
+	//_str[_size] = '\0';
+	//cout << *this << endl;
+
+	Insert(_size, ch);
 }
 void String::Append(const char* str)
 {
-	size_t len = strlen(str);
+	/*size_t len = strlen(str);
 	if (_size + len>_capacity)
 	{
 		Reserve(_size+len);
 	}
 	strcpy(_str+_size, str);
-	_size += len;
+	_size += len;*/
+
+	Insert(_size, str);
 }
 String& String::operator+=(char ch)
 {
@@ -76,10 +80,21 @@ size_t String::Find(char ch, size_t pos)
 			return pos;
 		}
 	}
-	return  String::npos;
+	return  npos;
+}
+size_t String::RFind(char ch, size_t pos)
+{
+	size_t end = _size - 1;
+	while (end--)
+	{
+		if (_str[end] == ch)
+			return pos;
+	}
+	return npos;
 }
 size_t String::Find(const char* str, size_t pos)
 {
+	assert(pos <= _size);
 	size_t len = strlen(str);
 	if (_size + len > _capacity)
 	{
@@ -108,16 +123,15 @@ void String::Insert(size_t pos, char ch)
 	{
 		Reserve(_capacity * 2);
 	}
-	size_t end = _size;
-	while (end>=pos)
+	int end = _size; 
+	while (end >= (int)pos)  //防止隐式类型转换
 	{
 		_str[end + 1] = _str[end];
 		--end;
 	}
 	_str[pos] = ch;
 	++_size;
-	_str[_size] = '\0';
-	cout << *this;
+	//cout << *this;
 }
 void String::Insert(size_t pos, const char* str)
 {
@@ -127,8 +141,8 @@ void String::Insert(size_t pos, const char* str)
 	{
 		Reserve(_capacity + len);
 	}
-	size_t end = _size;
-	while (end >= pos)
+	int end = _size;
+	while (end >= (int)pos)
 	{
 		_str[end + len] = _str[end];
 		--end;
@@ -140,14 +154,17 @@ void String::Insert(size_t pos, const char* str)
 		++i;
 		++_size;
 	}
-	_str[_size] = '\0';
-	cout << *this << endl;
+	//cout << *this << endl;
+}
+String String::Substr(size_t pos, size_t len)
+{
+
 }
 void String::Erase(size_t pos, size_t len)
 {
 	assert(!len);
 	assert(pos < _size);
-	if (pos + len >= _size)
+	if (pos + len >= _size)    //考虑越界问题
 	{
 		_size = pos;
 		_str[_size] = '\0';
@@ -157,8 +174,6 @@ void String::Erase(size_t pos, size_t len)
 		char* dst = _str + pos + len;
 		char* src = _str + pos;
 		strcpy(src, dst);
-		delete[] src;
 		_size -= len;
 	}
-	cout << *this;
 }
