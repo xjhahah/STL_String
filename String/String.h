@@ -22,7 +22,7 @@ public:
 	String(const char* str = "")
 	{
 		_size = strlen(str);
-		_capacity = _size > 15 ? _size : 15;
+		_capacity = _size > 15 ? _size : 15;   //如果要增容的容量为0  则默认给开15个空间
 		_str = new char[_capacity + 1];
 		strcpy(_str, str);
 	}
