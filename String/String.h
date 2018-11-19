@@ -86,7 +86,7 @@ public:
 	{
 		return 0 == _size;
 	}
-	void Swap(String s)
+	void Swap(String& s)
 	{
 		swap(_str, s._str);
 		swap(_size, s._size);

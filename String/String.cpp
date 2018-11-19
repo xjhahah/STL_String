@@ -4,7 +4,7 @@ void String::Reserve(size_t n)
 {
 	if (n>_capacity)
 	{
-		char* NewCapacity = new char(n+1);
+		char* NewCapacity = new char[n+1];
 		strcpy(NewCapacity, _str);
 		delete[] _str;
 		_str = NewCapacity;
@@ -85,10 +85,15 @@ size_t String::Find(char ch, size_t pos)
 size_t String::RFind(char ch, size_t pos)
 {
 	size_t end = _size - 1;
+	if (pos != npos)
+	{
+		assert(pos < _size);
+		end = pos;
+	}
 	while (end--)
 	{
 		if (_str[end] == ch)
-			return pos;
+			return end;
 	}
 	return npos;
 }
@@ -115,6 +120,21 @@ size_t String::Find(const char* str, size_t pos)
 		continue;
 	}
 	return String::npos;
+}
+String String::Substr(size_t pos, size_t len)
+{
+	assert(pos <= _size);
+	if (_size - pos < len)
+	{
+		len = _size - pos;
+	}
+	String sub;
+	sub.Reserve(len);
+	for (size_t i = pos; i < pos + len; ++i)
+	{
+		sub += _str[i];
+	}
+	return sub;
 }
 void String::Insert(size_t pos, char ch)
 {
@@ -155,10 +175,6 @@ void String::Insert(size_t pos, const char* str)
 		++_size;
 	}
 	//cout << *this << endl;
-}
-String String::Substr(size_t pos, size_t len)
-{
-
 }
 void String::Erase(size_t pos, size_t len)
 {
